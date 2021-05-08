@@ -1,0 +1,80 @@
+
+
+import os
+import sys
+import threading
+from typing import Any
+from pathlib import Path
+
+import subprocess
+import requests
+import shutil
+
+from util import get_appdatadir
+
+_URLS = [
+    'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm',
+    'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer',
+    'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/audio-0.9.3.tar.gz',
+]
+
+
+MODEL_DIR = get_appdatadir() / 'model'
+IS_FINISHED_STAMP = os.path.join(MODEL_DIR, 'is_finished')
+
+def download_file(url, outfile):
+    # NOTE the stream=True parameter below
+    try:
+        tmp = f'{outfile}.tmp'
+        if os.path.exists(tmp):
+            os.remove(tmp)
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            with open(tmp, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192): 
+                    # If you have chunk encoded response uncomment if
+                    # and set chunk_size parameter to None.
+                    #if chunk: 
+                    f.write(chunk)
+        shutil.move(tmp, outfile)
+        if outfile.endswith('.gz'):
+            cmd = f'tar xvf {outfile}'
+            subprocess.check_output(cmd, shell=True, cwd=os.path.dirname(outfile))
+    except KeyboardInterrupt:
+        print(f'Aborted download of {url}')
+        return
+
+def url_to_local_name(url: str) -> str:
+    model_dir = get_appdatadir() / 'model'
+    return os.path.join(model_dir, url.split('/')[-1])
+
+def main() -> None:
+    print(f'Model directory is: {MODEL_DIR}')
+    os.makedirs(MODEL_DIR, exist_ok=True)
+    threads = {}
+
+    if os.path.exists(IS_FINISHED_STAMP):
+        print('Model directory has already been populated.')
+        return
+
+    for url in _URLS:
+        local_filename = url_to_local_name(url)
+        if os.path.exists(local_filename):
+            print(f'{local_filename} already exists so skipping download.')
+            continue
+        t = threading.Thread(
+            target=download_file, args=(url, local_filename))
+        print(f'Downloading {url} -> {local_filename}')
+        threads[url] = t
+        t.daemon = True
+        t.start()
+    for url, t in threads.items():
+        while t.is_alive():  # allows keyboard interrupt.
+            t.join(.2)
+        print(f'Finished downloading {url}')
+
+    Path(IS_FINISHED_STAMP).touch()
+    
+
+if __name__ == '__main__':
+    main()
