@@ -19,11 +19,6 @@ VERSION = '0.0.1'
 with open(os.path.join(HERE, "README.md")) as fd:
     README = fd.read()
 
-REQUIREMENTS_TXT = os.path.join(os.path.dirname(__file__), 'requirements.txt')
-with open(REQUIREMENTS_TXT) as fd:
-    install_requires = fd.read().splitlines()
-
-
 class UploadCommand(Command):
     """Support setup.py upload."""
 
@@ -77,7 +72,12 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.8",
     ],
-    install_requires=install_requires,
+    install_requires=[
+        'deepspeech==0.9.3',
+        'webrtcvad',
+        'pyqt5',
+        'pathlib'
+    ],
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     include_package_data=True,
     extras_require={},
