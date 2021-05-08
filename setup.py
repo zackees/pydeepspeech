@@ -8,7 +8,7 @@ from setuptools import find_packages, setup, Command
 HERE = os.path.dirname(__file__)
 
 NAME = 'deepspeech_transcriber'
-DESCRIPTION = 'Super simple keyvalue store for python, backed by sqlite.'
+DESCRIPTION = "Mozilla's DeepSpeech transcriber in a pip installable package."
 URL = 'https://github.com/zackees/deepspeech_transcriber'
 EMAIL = 'dont@email.me'
 AUTHOR = 'Zach Vorhies'
@@ -76,7 +76,8 @@ setup(
         'deepspeech==0.9.3',
         'webrtcvad',
         'pyqt5',
-        'pathlib'
+        'pathlib',
+        'capturing_process',
     ],
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     include_package_data=True,

@@ -20,9 +20,10 @@ _URLS = [
 
 
 MODEL_DIR = get_appdatadir() / 'model'
+# Marks the model created.
 IS_FINISHED_STAMP = os.path.join(MODEL_DIR, 'is_finished')
 
-def download_file(url, outfile):
+def download_file(url, outfile) -> None:
     # NOTE the stream=True parameter below
     try:
         tmp = f'{outfile}.tmp'
@@ -45,23 +46,16 @@ def download_file(url, outfile):
         return
 
 def url_to_local_name(url: str) -> str:
-    model_dir = get_appdatadir() / 'model'
-    return os.path.join(model_dir, url.split('/')[-1])
+    return os.path.join(MODEL_DIR, url.split('/')[-1])
 
-def main() -> None:
-    print(f'Model directory is: {MODEL_DIR}')
+def installModels() -> None:
     os.makedirs(MODEL_DIR, exist_ok=True)
     threads = {}
-
     if os.path.exists(IS_FINISHED_STAMP):
-        print('Model directory has already been populated.')
         return
-
+    print('Downloading and installing the models for the first time. This may take a while.')
     for url in _URLS:
         local_filename = url_to_local_name(url)
-        if os.path.exists(local_filename):
-            print(f'{local_filename} already exists so skipping download.')
-            continue
         t = threading.Thread(
             target=download_file, args=(url, local_filename))
         print(f'Downloading {url} -> {local_filename}')
@@ -71,10 +65,13 @@ def main() -> None:
     for url, t in threads.items():
         while t.is_alive():  # allows keyboard interrupt.
             t.join(.2)
-        print(f'Finished downloading {url}')
-
+        print(f'Finished downloading {url}')    
     Path(IS_FINISHED_STAMP).touch()
-    
+
+def installModelsIfNecessary() -> str:
+    print(f'Model directory is: {MODEL_DIR}')
+    installModels()
+    return MODEL_DIR
 
 if __name__ == '__main__':
-    main()
+    installModelsIfNecessary()
