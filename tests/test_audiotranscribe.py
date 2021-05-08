@@ -60,10 +60,6 @@ class PyDeepSpeechTester(unittest.TestCase):
             cmd = f'pydeepspeech --wav_file {wav}'
             subprocess.check_output(cmd, shell=True)
             self.assertTrue(os.path.exists(wav[:-4]+'.txt'))
-            
-            
-            
-
-
+          
 if __name__ == '__main__':
     unittest.main()

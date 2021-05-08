@@ -8,8 +8,6 @@ from io import StringIO
 import sys
 import shutil
 
-from capturing_process import CapturingProcess
-
 from pydeepspeech.audioTranscript_cmd import transcribe
 
 def main() -> None:
