@@ -10,14 +10,13 @@ import subprocess
 import requests
 import shutil
 
-from util import get_appdatadir
+from deepspeech_transcriber.util import get_appdatadir
 
 _URLS = [
     'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm',
     'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer',
     'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/audio-0.9.3.tar.gz',
 ]
-
 
 MODEL_DIR = get_appdatadir() / 'model'
 # Marks the model created.

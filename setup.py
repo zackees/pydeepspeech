@@ -79,6 +79,12 @@ setup(
         'pathlib',
         'capturing_process',
     ],
+
+    entry_points = {
+        'console_scripts': [
+            'deepspeech_transcriber = deepspeech_transcriber.run:main',                  
+        ],              
+    },
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     include_package_data=True,
     extras_require={},

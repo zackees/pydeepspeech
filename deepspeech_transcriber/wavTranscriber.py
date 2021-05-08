@@ -1,7 +1,7 @@
 import glob
 import webrtcvad
 import logging
-import wavSplit
+import deepspeech_transcriber.wavSplit as wavSplit
 from deepspeech import Model
 from timeit import default_timer as timer
 

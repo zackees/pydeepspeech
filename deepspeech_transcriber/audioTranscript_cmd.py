@@ -5,10 +5,12 @@ import argparse
 import subprocess
 import shlex
 import numpy as np
-import wavTranscriber
+
+
+import deepspeech_transcriber.wavTranscriber as wavTranscriber
 
 # Debug helpers
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stderr, level=logging.CRITICAL)
 
 
 def main(args):
@@ -21,7 +23,7 @@ def main(args):
                         help='Path to directory that contains all model files (output_graph and scorer)')
     parser.add_argument('--stream', required=False, action='store_true',
                         help='To use deepspeech streaming interface')
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     if args.stream is True:
         print("Opening mic for streaming")
     elif args.audio is not None:
@@ -29,9 +31,11 @@ def main(args):
     else:
         parser.print_help()
         parser.exit()
+    transcribe(args.aggressive, args.audio, args.model, args.stream)
 
+def transcribe(aggressive, audio, model, stream):
     # Point to a path containing the pre-trained models & resolve ~ if used
-    dirName = os.path.expanduser(args.model)
+    dirName = os.path.expanduser(model)
 
     # Resolve all the paths of model files
     output_graph, scorer = wavTranscriber.resolve_models(dirName)
@@ -39,15 +43,15 @@ def main(args):
     # Load output_graph, alpahbet and scorer
     model_retval = wavTranscriber.load_model(output_graph, scorer)
 
-    if args.audio is not None:
+    if audio is not None:
         title_names = ['Filename', 'Duration(s)', 'Inference Time(s)', 'Model Load Time(s)', 'Scorer Load Time(s)']
         print("\n%-30s %-20s %-20s %-20s %s" % (title_names[0], title_names[1], title_names[2], title_names[3], title_names[4]))
 
         inference_time = 0.0
 
         # Run VAD on the input file
-        waveFile = args.audio
-        segments, sample_rate, audio_length = wavTranscriber.vad_segment_generator(waveFile, args.aggressive)
+        waveFile = audio
+        segments, sample_rate, audio_length = wavTranscriber.vad_segment_generator(waveFile, aggressive)
         f = open(waveFile.rstrip(".wav") + ".txt", 'w')
         logging.debug("Saving Transcript @: %s" % waveFile.rstrip(".wav") + ".txt")
 

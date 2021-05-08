@@ -10,6 +10,8 @@ import shutil
 
 from capturing_process import CapturingProcess
 
+from deepspeech_transcriber.audioTranscript_cmd import transcribe
+
 def main() -> None:
     parser = argparse.ArgumentParser(description='Transcribe long audio files using webRTC VAD or use the streaming interface')
     #parser.add_argument('--aggressive', type=int, choices=range(4), required=False, default=1,
@@ -23,9 +25,7 @@ def main() -> None:
     args = parser.parse_args()
     model_dir = args.model_dir or installModelsIfNecessary()
     expected_txt_file = args.wav_file[:-4] + '.txt'
-    cmd = f'python audioTranscript_cmd.py --aggressive 1 --audio {args.wav_file} --model {model_dir}'
-    print(f'Executing: {cmd}')
-    CapturingProcess(cmd, stdout=StringIO(), stderr=StringIO()).check_wait()
+    transcribe(aggressive=1, audio=args.wav_file, model=model_dir, stream=False)
     if not os.path.exists(expected_txt_file):
         print(f'Expected a generated text file at {expected_txt_file} but none appeared.')
         sys.exit(1)
