@@ -10,15 +10,15 @@ import subprocess
 import requests
 import shutil
 
-from deepspeech_transcriber.util import get_appdatadir
+from pydeepspeech.util import get_appdatadir
 
+_VERSION = 'v0.9.3'
 _URLS = [
     'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm',
     'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer',
-    'https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/audio-0.9.3.tar.gz',
 ]
 
-MODEL_DIR = get_appdatadir() / 'model'
+MODEL_DIR = get_appdatadir() / 'model' / _VERSION
 # Marks the model created.
 IS_FINISHED_STAMP = os.path.join(MODEL_DIR, 'is_finished')
 
@@ -37,9 +37,6 @@ def download_file(url, outfile) -> None:
                     #if chunk: 
                     f.write(chunk)
         shutil.move(tmp, outfile)
-        if outfile.endswith('.gz'):
-            cmd = f'tar xvf {outfile}'
-            subprocess.check_output(cmd, shell=True, cwd=os.path.dirname(outfile))
     except KeyboardInterrupt:
         print(f'Aborted download of {url}')
         return

@@ -1,2 +1,2 @@
-# deepspeech_transcriber
+# pydeepspeech
 Easy setup for Mozillas Deepspeech transcriber

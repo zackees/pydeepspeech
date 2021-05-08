@@ -25,4 +25,4 @@ def get_datadir() -> pathlib.Path:
 # create your program's directory
 
 def get_appdatadir() -> pathlib.Path:
-    return get_datadir() / 'deepspeech_transcriber'
+    return get_datadir() / 'pydeepspeech'

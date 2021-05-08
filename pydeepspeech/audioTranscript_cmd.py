@@ -7,7 +7,7 @@ import shlex
 import numpy as np
 
 
-import deepspeech_transcriber.wavTranscriber as wavTranscriber
+import pydeepspeech.wavTranscriber as wavTranscriber
 
 # Debug helpers
 logging.basicConfig(stream=sys.stderr, level=logging.CRITICAL)

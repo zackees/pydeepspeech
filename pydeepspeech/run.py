@@ -1,7 +1,7 @@
 
 import argparse
 
-from deepspeech_transcriber.installModels import installModelsIfNecessary
+from pydeepspeech.installModels import installModelsIfNecessary
 import os
 import subprocess
 from io import StringIO
@@ -10,7 +10,7 @@ import shutil
 
 from capturing_process import CapturingProcess
 
-from deepspeech_transcriber.audioTranscript_cmd import transcribe
+from pydeepspeech.audioTranscript_cmd import transcribe
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Transcribe long audio files using webRTC VAD or use the streaming interface')
@@ -33,7 +33,7 @@ def main() -> None:
         shutil.move(expected_txt_file, args.out_file)
         expected_txt_file = args.out_file
     print(f'Wrote out subtitle file {expected_txt_file}')
-    return
+    sys.exit(0)
 
 if __name__ == '__main__':
     main()

@@ -7,9 +7,9 @@ from setuptools import find_packages, setup, Command
 # The directory containing this file
 HERE = os.path.dirname(__file__)
 
-NAME = 'deepspeech_transcriber'
+NAME = 'pydeepspeech'
 DESCRIPTION = "Mozilla's DeepSpeech transcriber in a pip installable package."
-URL = 'https://github.com/zackees/deepspeech_transcriber'
+URL = 'https://github.com/zackees/pydeepspeech'
 EMAIL = 'dont@email.me'
 AUTHOR = 'Zach Vorhies'
 REQUIRES_PYTHON = '>=3.6.0'
@@ -82,7 +82,7 @@ setup(
 
     entry_points = {
         'console_scripts': [
-            'deepspeech_transcriber = deepspeech_transcriber.run:main',                  
+            'pydeepspeech = pydeepspeech.run:main',
         ],              
     },
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
