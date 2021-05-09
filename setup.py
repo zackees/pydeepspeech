@@ -13,7 +13,7 @@ URL = 'https://github.com/zackees/pydeepspeech'
 EMAIL = 'dont@email.me'
 AUTHOR = 'Zach Vorhies'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.0.1'
+VERSION = '1.0.0'
 
 # The text of the README file
 with open(os.path.join(HERE, "README.md")) as fd:
@@ -78,6 +78,7 @@ setup(
         'pyqt5',
         'pathlib',
         'capturing_process',
+        'requests',
     ],
 
     entry_points = {
