@@ -3,8 +3,6 @@ import argparse
 
 from pydeepspeech.installModels import installModelsIfNecessary
 import os
-import subprocess
-from io import StringIO
 import sys
 import shutil
 

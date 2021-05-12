@@ -1,28 +1,15 @@
-import sys
-import pathlib
+import pip
+import os
 
+from distutils.version import LooseVersion
 
-def get_datadir() -> pathlib.Path:
-
-    """
-    Returns a parent directory path
-    where persistent application data can be stored.
-
-    # linux: ~/.local/share
-    # macOS: ~/Library/Application Support
-    # windows: C:/Users/<USER>/AppData/Roaming
-    """
-
-    home = pathlib.Path.home()
-
-    if sys.platform == "win32":
-        return home / "AppData/Roaming"
-    elif sys.platform == "linux":
-        return home / ".local/share"
-    elif sys.platform == "darwin":
-        return home / "Library/Application Support"
+if LooseVersion(pip.__version__) < LooseVersion('10'):
+    # older pip version
+    from pip.utils.appdirs import user_cache_dir
+else:
+    # newer pip version
+    from pip._internal.utils.appdirs import user_cache_dir
 
 # create your program's directory
-
-def get_appdatadir() -> pathlib.Path:
-    return get_datadir() / 'pydeepspeech'
+def get_appdatadir() -> str:
+    return os.path.join(user_cache_dir('pip'), 'pydeepspeech_models')
