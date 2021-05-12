@@ -13,7 +13,7 @@ URL = 'https://github.com/zackees/pydeepspeech'
 EMAIL = 'dont@email.me'
 AUTHOR = 'Zach Vorhies'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '1.0.3'
+VERSION = '1.0.4'
 
 # The text of the README file
 with open(os.path.join(HERE, "README.md")) as fd:
@@ -75,7 +75,6 @@ setup(
     install_requires=[
         'deepspeech==0.9.3',
         'webrtcvad',
-        'pyqt5',
         'pathlib',
         'capturing_process',
         'requests',
