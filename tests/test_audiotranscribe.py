@@ -43,7 +43,7 @@ def download_tar_gz(url, out_dir) -> None:
             os.remove(tmp)
 
 class PyDeepSpeechTester(unittest.TestCase):
-    def test_KeyValueSqlite_init(self):
+    def test_download_and_run_audio_files(self):
         print(f'MODEL_DIR: {MODEL_DIR}')
         out_dir = os.path.join(MODEL_DIR, 'test_audiotranscribe')
         if os.path.exists(out_dir):
@@ -54,12 +54,12 @@ class PyDeepSpeechTester(unittest.TestCase):
             for name in files:
                 if '.wav' in name and '.' != name[0]:
                     wav_files.append(os.path.join(root, name))
-        print(wav_files)
         for wav in wav_files:
             print(wav)
             cmd = f'pydeepspeech --wav_file {wav}'
             subprocess.check_output(cmd, shell=True)
             self.assertTrue(os.path.exists(wav[:-4]+'.txt'))
+            os.remove(wav[:-4]+'.txt')
           
 if __name__ == '__main__':
     unittest.main()
