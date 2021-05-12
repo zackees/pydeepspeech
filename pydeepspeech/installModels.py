@@ -34,7 +34,7 @@ def download_file(url, outfile) -> None:
                     # and set chunk_size parameter to None.
                     #if chunk: 
                     f.write(chunk)
-        shutil.move(tmp, outfile)
+        os.rename(tmp, outfile)
     except KeyboardInterrupt:
         print(f'Aborted download of {url}')
         return
