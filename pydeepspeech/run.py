@@ -1,12 +1,17 @@
 
 import argparse
-
-from pydeepspeech.installModels import installModelsIfNecessary
 import os
-import sys
 import shutil
+import sys
 
 from pydeepspeech.audioTranscript_cmd import transcribe
+from pydeepspeech.installModels import installModelsIfNecessary
+
+
+def check_path(path: str):
+    if os.path.exists(path):
+        return
+    raise OSError(f'Did not find expected path {path}')
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Transcribe long audio files using webRTC VAD or use the streaming interface')
@@ -21,6 +26,10 @@ def main() -> None:
     args = parser.parse_args()
     model_dir = args.model_dir or installModelsIfNecessary()
     expected_txt_file = args.wav_file[:-4] + '.txt'
+    check_path(args.wave_file)
+    check_path(model_dir)
+    check_path(os.path.join(model_dir,'deepspeech-0.9.3-models.scorer'))
+    check_path(os.path.join(model_dir,'deepspeech-0.9.3-models.pbmm'))
     transcribe(aggressive=1, audio=args.wav_file, model=model_dir, stream=False)
     if not os.path.exists(expected_txt_file):
         print(f'Expected a generated text file at {expected_txt_file} but none appeared.')
