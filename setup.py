@@ -88,6 +88,9 @@ setup(
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     include_package_data=True,
     extras_require={},
+    extras_require={
+        "test": ["pytest"],
+    },
     cmdclass={
         'upload': UploadCommand,
     },
