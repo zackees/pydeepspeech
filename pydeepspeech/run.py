@@ -26,7 +26,7 @@ def main() -> None:
     args = parser.parse_args()
     model_dir = args.model_dir or installModelsIfNecessary()
     expected_txt_file = args.wav_file[:-4] + '.txt'
-    check_path(args.wave_file)
+    check_path(args.wav_file)
     check_path(model_dir)
     check_path(os.path.join(model_dir,'deepspeech-0.9.3-models.scorer'))
     check_path(os.path.join(model_dir,'deepspeech-0.9.3-models.pbmm'))

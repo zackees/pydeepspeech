@@ -13,7 +13,7 @@ URL = 'https://github.com/zackees/pydeepspeech'
 EMAIL = 'dont@email.me'
 AUTHOR = 'Zach Vorhies'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '1.1.1'
+VERSION = '1.1.2'
 
 # The text of the README file
 with open(os.path.join(HERE, "README.md")) as fd:
