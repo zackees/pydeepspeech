@@ -30,7 +30,7 @@ def main() -> None:
     check_path(model_dir)
     check_path(os.path.join(model_dir,'deepspeech-0.9.3-models.scorer'))
     check_path(os.path.join(model_dir,'deepspeech-0.9.3-models.pbmm'))
-    transcribe(aggressive=1, audio=args.wav_file, model=model_dir, stream=False)
+    transcribe(aggressive=1, audio=args.wav_file, model=model_dir)
     if not os.path.exists(expected_txt_file):
         print(f'Expected a generated text file at {expected_txt_file} but none appeared.')
         sys.exit(1)
