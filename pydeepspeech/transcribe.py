@@ -5,7 +5,7 @@ import subprocess
 
 import numpy as np  # pylint: disable=import-error
 
-import pydeepspeech.wavTranscriber as wavTranscriber
+import pydeepspeech.wav_transcriber as wav_transcriber
 
 
 def transcribe(aggressive, audio, model):
@@ -13,10 +13,10 @@ def transcribe(aggressive, audio, model):
     dir_name = os.path.expanduser(model)
 
     # Resolve all the paths of model files
-    output_graph, scorer = wavTranscriber.resolve_models(dir_name)
+    output_graph, scorer = wav_transcriber.resolve_models(dir_name)
 
     # Load output_graph, alpahbet and scorer
-    model_retval = wavTranscriber.load_model(output_graph, scorer)
+    model_retval = wav_transcriber.load_model(output_graph, scorer)
 
     if audio is not None:
         title_names = [
@@ -45,7 +45,7 @@ def transcribe(aggressive, audio, model):
             segments,
             sample_rate,
             audio_length,
-        ) = wavTranscriber.vad_segment_generator(wave_file, aggressive)
+        ) = wav_transcriber.vad_segment_generator(wave_file, aggressive)
         f = open(wave_file.rstrip(".wav") + ".txt", "w")
         logging.debug("Saving Transcript @: %s" % wave_file.rstrip(".wav") + ".txt")
 
@@ -53,7 +53,7 @@ def transcribe(aggressive, audio, model):
             # Run deepspeech on the chunk that just completed VAD
             logging.debug("Processing chunk %002d" % (i,))
             audio = np.frombuffer(segment, dtype=np.int16)
-            output = wavTranscriber.stt(model_retval[0], audio, sample_rate)
+            output = wav_transcriber.stt(model_retval[0], audio, sample_rate)
             inference_time += output[1]
             logging.debug("Transcript: %s" % output[0])
 
