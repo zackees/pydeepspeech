@@ -15,23 +15,29 @@
 
 Install to current python environment
 
-
+Console api:
 ```
 $ pip install pydeepspeech
 $ pydeepspeech --wav_file <WAVE_FILE> --out_file <TEXT_FILE>
+```
 
+-or-
+
+```
+$ pydeepspeech --wav_file <WAVE_FILE> --out_file <TEXT_FILE> --model_dir <MY_PBMM_AND_SCORER_FILES>
+```
+
+-or-
+
+```
+ $ pydeepspeech_installmodels --pbmm <PBMM_FILE_OR_URL> --scorer <SCORER_FILE_OR_URL>
+ $ pydeepspeech --wav_file <WAVE_FILE> --out_file <TEXT_FILE>
 ```
 
 Or in python
 ```
 from pydeepspeech.transcribe import transcribe
 transcribe(...)
-```
-
-If you have you're own models (pbmm and scorer files) then these can be installed via pydeepspeech_installmodels.
-```
-$ pydeepspeech_installmodels --help
-$ pydeepspeech_installmodels --pbmm <PBMM_FILE_OR_URL> --scorer <SCORER_FILE_OR_URL>
 ```
 
 
