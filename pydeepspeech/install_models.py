@@ -54,13 +54,26 @@ def is_models_installed() -> bool:
     return os.path.exists(IS_FINISHED_STAMP)
 
 
+def clean_dir(path: str) -> None:
+    """
+    Removes all files in the directory.
+    """
+    if not os.path.exists(path):
+        return
+    for f in os.listdir(path):
+        f = os.path.join(path, f)
+        if os.path.isfile(f):
+            os.remove(f)
+
+
 def install_deepspeechmodules(
-    url_pbmm: Optional[str] = URL_PBMM,
-    url_scorer: Optional[str] = URL_SCORER,
+    url_pbmm: Optional[str] = None,
+    url_scorer: Optional[str] = None,
 ) -> None:
-    if os.path.exists(IS_FINISHED_STAMP):
-        os.remove(IS_FINISHED_STAMP)
+    url_pbmm = url_pbmm or URL_PBMM
+    url_scorer = url_scorer or URL_SCORER
     os.makedirs(MODEL_DIR, exist_ok=True)
+    clean_dir(MODEL_DIR)
     threads = {}
     if os.path.exists(IS_FINISHED_STAMP):
         return
