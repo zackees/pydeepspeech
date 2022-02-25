@@ -75,8 +75,6 @@ def install_deepspeechmodules(
     os.makedirs(MODEL_DIR, exist_ok=True)
     clean_dir(MODEL_DIR)
     threads = {}
-    if os.path.exists(IS_FINISHED_STAMP):
-        return
     url_pbmm = url_pbmm or URL_PBMM
     url_scorer = url_scorer or URL_SCORER
     print(

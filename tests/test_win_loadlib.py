@@ -1,9 +1,8 @@
 import ctypes
-import os
-import unittest
-import sys
-
 import faulthandler
+import os
+import sys
+import unittest
 
 faulthandler.enable()
 
@@ -50,7 +49,7 @@ class WinLibdeepspeechTester(unittest.TestCase):
             error_msg = ""
             for dll, err in failures:
                 error_msg += f"{dll} failed with {err}\n"
-            self.failed(error_msg)
+            self.fail(error_msg)
 
     @unittest.skipIf(sys.platform != "win32", "Win32 only test skipped.")
     def test_loading_libdeepspeech_so(self):
