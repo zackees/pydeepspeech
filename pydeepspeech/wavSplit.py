@@ -8,7 +8,7 @@ def read_wave(path):
 
     Takes the path, and returns (PCM audio data, sample rate).
     """
-    with contextlib.closing(wave.open(path, 'rb')) as wf:
+    with contextlib.closing(wave.open(path, "rb")) as wf:
         num_channels = wf.getnchannels()
         assert num_channels == 1
         sample_width = wf.getsampwidth()
@@ -26,7 +26,7 @@ def write_wave(path, audio, sample_rate):
 
     Takes path, PCM audio data, and sample rate.
     """
-    with contextlib.closing(wave.open(path, 'wb')) as wf:
+    with contextlib.closing(wave.open(path, "wb")) as wf:
         wf.setnchannels(1)
         wf.setsampwidth(2)
         wf.setframerate(sample_rate)
@@ -35,6 +35,7 @@ def write_wave(path, audio, sample_rate):
 
 class Frame(object):
     """Represents a "frame" of audio data."""
+
     def __init__(self, bytes, timestamp, duration):
         self.bytes = bytes
         self.timestamp = timestamp
@@ -54,13 +55,12 @@ def frame_generator(frame_duration_ms, audio, sample_rate):
     timestamp = 0.0
     duration = (float(n) / sample_rate) / 2.0
     while offset + n < len(audio):
-        yield Frame(audio[offset:offset + n], timestamp, duration)
+        yield Frame(audio[offset : offset + n], timestamp, duration)
         timestamp += duration
         offset += n
 
 
-def vad_collector(sample_rate, frame_duration_ms,
-                  padding_duration_ms, vad, frames):
+def vad_collector(sample_rate, frame_duration_ms, padding_duration_ms, vad, frames):
     """Filters out non-voiced audio frames.
 
     Given a webrtcvad.Vad and a source of audio frames, yields only
@@ -122,7 +122,7 @@ def vad_collector(sample_rate, frame_duration_ms,
             # audio we've collected.
             if num_unvoiced > 0.9 * ring_buffer.maxlen:
                 triggered = False
-                yield b''.join([f.bytes for f in voiced_frames])
+                yield b"".join([f.bytes for f in voiced_frames])
                 ring_buffer.clear()
                 voiced_frames = []
     if triggered:
@@ -130,5 +130,4 @@ def vad_collector(sample_rate, frame_duration_ms,
     # If we have any leftover voiced audio when we run out of input,
     # yield it.
     if voiced_frames:
-        yield b''.join([f.bytes for f in voiced_frames])
-
+        yield b"".join([f.bytes for f in voiced_frames])
