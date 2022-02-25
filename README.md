@@ -18,7 +18,7 @@ Install to current python environment
 Console api:
 ```
 $ pip install pydeepspeech
-$ pydeepspeech --wav_file <WAVE_FILE> --out_file <TEXT_FILE>
+$ pydeepspeech --wav_file <WAVE_FILE> --aggressive 1 --out_file <TEXT_FILE>
 ```
 
 -or-
