@@ -42,7 +42,9 @@ def download_file(url, outfile) -> None:
 def url_to_local_name(url: str) -> str:
     return os.path.join(MODEL_DIR, url.split('/')[-1])
 
-def installModels() -> None:
+def installModels(disable_cache: bool) -> None:
+    if disable_cache and os.path.exists(IS_FINISHED_STAMP):
+        os.remove(IS_FINISHED_STAMP)        
     os.makedirs(MODEL_DIR, exist_ok=True)
     threads = {}
     if os.path.exists(IS_FINISHED_STAMP):
@@ -64,7 +66,10 @@ def installModels() -> None:
 
 def installModelsIfNecessary() -> str:
     print(f'Model directory is: {MODEL_DIR}')
-    installModels()
+    try:
+        installModels(disable_cache=False)
+    except OSError:
+        installModels(disable_cache=True)
     return MODEL_DIR
 
 if __name__ == '__main__':
