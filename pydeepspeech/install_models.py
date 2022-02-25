@@ -8,7 +8,7 @@ from typing import Optional
 
 import requests
 
-from pydeepspeech.util import get_appdatadir
+from pydeepspeech.paths import PATH_MODELS
 
 # AI model used for the application
 _VERSION = "v0.9.3"
@@ -17,7 +17,7 @@ URL_PBMM = "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deeps
 
 URL_SCORER = "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer"
 
-MODEL_DIR = os.path.join(get_appdatadir(), "model", _VERSION)
+MODEL_DIR = os.path.join(PATH_MODELS, _VERSION)
 # Marks the model created.
 IS_FINISHED_STAMP = os.path.join(MODEL_DIR, "is_finished")
 
