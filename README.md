@@ -50,6 +50,15 @@ Download and install virtual env:
 curl -X GET https://raw.githubusercontent.com/zackees/make_venv/main/make_venv.py -o make_env.py
 python make_env.p  # Make the environment
 source activate.sh  # Enter environment
+pip install -e .
 ```
   
 To get back into the environment execute `source activate.sh` (if windows, you must be using git-bash)
+
+
+# Testing
+
+Testing and linting is very simple. Just run `tox`
+```
+$ tox
+```
