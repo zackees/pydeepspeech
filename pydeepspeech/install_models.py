@@ -1,7 +1,10 @@
+# type: ignore
+
 import os
 import shutil
 import threading
 from pathlib import Path
+from typing import Optional
 
 import requests
 
@@ -9,10 +12,10 @@ from pydeepspeech.util import get_appdatadir
 
 # AI model used for the application
 _VERSION = "v0.9.3"
-_URLS = [
-    "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm",
-    "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer",
-]
+
+URL_PBMM = "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm"
+
+URL_SCORER = "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer"
 
 MODEL_DIR = os.path.join(get_appdatadir(), "model", _VERSION)
 # Marks the model created.
@@ -20,6 +23,10 @@ IS_FINISHED_STAMP = os.path.join(MODEL_DIR, "is_finished")
 
 
 def download_file(url, outfile) -> None:
+    if os.path.isfile(url):
+        # Actually it's a file, so we can just copy it.
+        shutil.copyfile(url, outfile)
+        return
     # NOTE the stream=True parameter below
     try:
         tmp = f"{outfile}.tmp"
@@ -43,17 +50,26 @@ def url_to_local_name(url: str) -> str:
     return os.path.join(MODEL_DIR, url.split("/")[-1])
 
 
-def installModels(disable_cache: bool) -> None:
-    if disable_cache and os.path.exists(IS_FINISHED_STAMP):
+def is_models_installed() -> bool:
+    return os.path.exists(IS_FINISHED_STAMP)
+
+
+def install_deepspeechmodules(
+    url_pbmm: Optional[str] = URL_PBMM,
+    url_scorer: Optional[str] = URL_SCORER,
+) -> None:
+    if os.path.exists(IS_FINISHED_STAMP):
         os.remove(IS_FINISHED_STAMP)
     os.makedirs(MODEL_DIR, exist_ok=True)
     threads = {}
     if os.path.exists(IS_FINISHED_STAMP):
         return
+    url_pbmm = url_pbmm or URL_PBMM
+    url_scorer = url_scorer or URL_SCORER
     print(
         "Downloading and installing the models for the first time. This may take a while."
     )
-    for url in _URLS:
+    for url in [url_pbmm, url_scorer]:
         local_filename = url_to_local_name(url)
         t = threading.Thread(target=download_file, args=(url, local_filename))
         print(f"Downloading {url} -> {local_filename}")
@@ -67,14 +83,12 @@ def installModels(disable_cache: bool) -> None:
     Path(IS_FINISHED_STAMP).touch()
 
 
-def installModelsIfNecessary() -> str:
+def install_dependencies_if_necessary() -> str:  # pylint: disable=invalid-name
     print(f"Model directory is: {MODEL_DIR}")
-    try:
-        installModels(disable_cache=False)
-    except OSError:
-        installModels(disable_cache=True)
+    if not is_models_installed():
+        install_deepspeechmodules(url_pbmm=URL_PBMM, url_scorer=URL_SCORER)
     return MODEL_DIR
 
 
 if __name__ == "__main__":
-    installModelsIfNecessary()
+    install_dependencies_if_necessary()

@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 import collections
 import contextlib
 import wave

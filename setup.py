@@ -44,7 +44,9 @@ class UploadCommand(Command):
             pass
 
         self.status("Building Source and Wheel (universal) distribution…")
-        os.system("{0} setup.py sdist bdist_wheel --universal".format(sys.executable))
+        os.system(
+            "{0} setup.py sdist bdist_wheel --universal".format(sys.executable)
+        )
 
         self.status("Uploading the package to PyPI via Twine…")
         os.system("twine upload dist/*")
@@ -84,9 +86,12 @@ setup(
     entry_points={
         "console_scripts": [
             "pydeepspeech = pydeepspeech.run:main",
+            "pydeepspeech_installmodels = pydeepspeech.interactive_install_modules:main",
         ],
     },
-    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    packages=find_packages(
+        exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
+    ),
     include_package_data=True,
     extras_require={
         "test": ["pytest"],

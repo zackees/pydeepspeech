@@ -3,8 +3,8 @@ import os
 import shutil
 import sys
 
-from pydeepspeech.audioTranscript_cmd import transcribe
-from pydeepspeech.installModels import installModelsIfNecessary
+from pydeepspeech.install_models import install_dependencies_if_necessary
+from pydeepspeech.transcribe import transcribe
 
 
 def check_path(path: str):
@@ -17,10 +17,18 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Transcribe long audio files using webRTC VAD or use the streaming interface"
     )
-    # parser.add_argument('--aggressive', type=int, choices=range(4), required=False, default=1,
-    #                    help='Determines how aggressive filtering out non-speech is. (Interger between 0-3)')
     parser.add_argument(
-        "--wav_file", required=True, help="Path to the audio file to run (WAV format)"
+        "--aggressive",
+        type=int,
+        choices=range(4),
+        required=False,
+        default=1,
+        help="Determines how aggressive filtering out non-speech is. (Interger between 0-3)",
+    )
+    parser.add_argument(
+        "--wav_file",
+        required=True,
+        help="Path to the audio file to run (WAV format)",
     )
     parser.add_argument("--out_file", default=None)
     parser.add_argument(
@@ -29,13 +37,13 @@ def main() -> None:
         default=None,
     )
     args = parser.parse_args()
-    model_dir = args.model_dir or installModelsIfNecessary()
+    model_dir = args.model_dir or install_dependencies_if_necessary()
     expected_txt_file = args.wav_file[:-4] + ".txt"
     check_path(args.wav_file)
     check_path(model_dir)
     check_path(os.path.join(model_dir, "deepspeech-0.9.3-models.scorer"))
     check_path(os.path.join(model_dir, "deepspeech-0.9.3-models.pbmm"))
-    transcribe(aggressive=1, audio=args.wav_file, model=model_dir)
+    transcribe(aggressive=args.aggressive, audio=args.wav_file, model=model_dir)
     if not os.path.exists(expected_txt_file):
         print(
             f"Expected a generated text file at {expected_txt_file} but none appeared."

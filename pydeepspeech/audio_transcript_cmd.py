@@ -1,6 +1,6 @@
-import sys
-import logging
 import argparse
+import logging
+import sys
 
 from pydeepspeech.transcribe import transcribe
 
@@ -20,7 +20,9 @@ def main(args):
         help="Determines how aggressive filtering out non-speech is. (Interger between 0-3)",
     )
     parser.add_argument(
-        "--audio", required=False, help="Path to the audio file to run (WAV format)"
+        "--audio",
+        required=False,
+        help="Path to the audio file to run (WAV format)",
     )
     parser.add_argument(
         "--model",

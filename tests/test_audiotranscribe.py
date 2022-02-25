@@ -1,18 +1,17 @@
 import os
 import shutil
+import subprocess
 import sys
+import tarfile
 import tempfile
 import unittest
-import tarfile
-import requests
-import subprocess
-from pydeepspeech.installModels import MODEL_DIR
-
 from io import StringIO
 
-_URL_WAV_DATA = (
-    "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/audio-0.9.3.tar.gz"
-)
+import requests
+
+from pydeepspeech.install_models import MODEL_DIR  # pylint: disable=import-error
+
+_URL_WAV_DATA = "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/audio-0.9.3.tar.gz"
 
 
 def download_tar_gz(url, out_dir) -> None:
@@ -62,6 +61,9 @@ class PyDeepSpeechTester(unittest.TestCase):
             subprocess.check_output(cmd, shell=True)
             self.assertTrue(os.path.exists(wav[:-4] + ".txt"))
             os.remove(wav[:-4] + ".txt")
+
+    def test_pydeepspeech_installmodels(self):
+        self.assertEqual(0, os.system("pydeepspeech_installmodels --help"))
 
 
 if __name__ == "__main__":

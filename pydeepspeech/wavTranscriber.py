@@ -1,9 +1,13 @@
+# pylint: skip-file
+
 import glob
-import webrtcvad
 import logging
-import pydeepspeech.wavSplit as wavSplit
-from deepspeech import Model
 from timeit import default_timer as timer
+
+import webrtcvad  # type: ignore
+from deepspeech import Model  # type: ignore
+
+import pydeepspeech.wavSplit as wavSplit
 
 """
 Load the pre-trained model into the memory
@@ -52,7 +56,8 @@ def stt(ds, audio, fs):
     inference_end = timer() - inference_start
     inference_time += inference_end
     logging.debug(
-        "Inference took %0.3fs for %0.3fs audio file." % (inference_end, audio_length)
+        "Inference took %0.3fs for %0.3fs audio file."
+        % (inference_end, audio_length)
     )
 
     return [output, inference_time]
@@ -94,7 +99,9 @@ Returns tuple of
 def vad_segment_generator(wavFile, aggressiveness):
     logging.debug("Caught the wav file @: %s" % (wavFile))
     audio, sample_rate, audio_length = wavSplit.read_wave(wavFile)
-    assert sample_rate == 16000, "Only 16000Hz input WAV files are supported for now!"
+    assert (
+        sample_rate == 16000
+    ), "Only 16000Hz input WAV files are supported for now!"
     vad = webrtcvad.Vad(int(aggressiveness))
     frames = wavSplit.frame_generator(30, audio, sample_rate)
     frames = list(frames)

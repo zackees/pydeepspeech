@@ -1,19 +1,19 @@
-import os
 import logging
-import subprocess
+import os
 import shlex
-import numpy as np
+import subprocess
 
+import numpy as np  # pylint: disable=import-error
 
 import pydeepspeech.wavTranscriber as wavTranscriber
 
 
 def transcribe(aggressive, audio, model):
     # Point to a path containing the pre-trained models & resolve ~ if used
-    dirName = os.path.expanduser(model)
+    dir_name = os.path.expanduser(model)
 
     # Resolve all the paths of model files
-    output_graph, scorer = wavTranscriber.resolve_models(dirName)
+    output_graph, scorer = wavTranscriber.resolve_models(dir_name)
 
     # Load output_graph, alpahbet and scorer
     model_retval = wavTranscriber.load_model(output_graph, scorer)
@@ -40,12 +40,14 @@ def transcribe(aggressive, audio, model):
         inference_time = 0.0
 
         # Run VAD on the input file
-        waveFile = audio
-        segments, sample_rate, audio_length = wavTranscriber.vad_segment_generator(
-            waveFile, aggressive
-        )
-        f = open(waveFile.rstrip(".wav") + ".txt", "w")
-        logging.debug("Saving Transcript @: %s" % waveFile.rstrip(".wav") + ".txt")
+        wave_file = audio
+        (
+            segments,
+            sample_rate,
+            audio_length,
+        ) = wavTranscriber.vad_segment_generator(wave_file, aggressive)
+        f = open(wave_file.rstrip(".wav") + ".txt", "w")
+        logging.debug("Saving Transcript @: %s" % wave_file.rstrip(".wav") + ".txt")
 
         for i, segment in enumerate(segments):
             # Run deepspeech on the chunk that just completed VAD
@@ -61,7 +63,7 @@ def transcribe(aggressive, audio, model):
         f.close()
 
         # Extract filename from the full file path
-        filename, ext = os.path.split(os.path.basename(waveFile))
+        filename, ext = os.path.split(os.path.basename(wave_file))
         logging.debug(
             "************************************************************************************************************"
         )

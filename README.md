@@ -28,6 +28,11 @@ from pydeepspeech.transcribe import transcribe
 transcribe(...)
 ```
 
+If you have you're own models (pbmm and scorer files) then these can be installed via pydeepspeech_installmodels.
+```
+$ pydeepspeech_installmodels --help
+$ pydeepspeech_installmodels --pbmm <PBMM_FILE_OR_URL> --scorer <SCORER_FILE_OR_URL>
+```
 
 
 ## Optional: Create a virtual python package
