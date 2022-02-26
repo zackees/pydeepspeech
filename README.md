@@ -54,7 +54,7 @@ Download and install virtual env:
 ```
 # Download
 curl -X GET https://raw.githubusercontent.com/zackees/make_venv/main/make_venv.py -o make_env.py
-python make_env.p  # Make the environment
+python make_env.py  # Make the environment
 source activate.sh  # Enter environment
 $ pip install pydeepspeech
 ```
