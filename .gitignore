@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Runtime files.
+make_env.py
+activate.sh
+
 # C extensions
 *.so
 
